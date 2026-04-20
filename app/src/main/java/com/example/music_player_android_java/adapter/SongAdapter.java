@@ -16,9 +16,15 @@ import java.util.List;
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     List<Song> songList;
+    OnSongClickListener listener;
 
-    public SongAdapter(List<Song> songList) {
+    public interface OnSongClickListener {
+        void onSongClick(Song song);
+    }
+
+    public SongAdapter(List<Song> songList, OnSongClickListener listener) {
         this.songList = songList;
+        this.listener = listener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -50,6 +56,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
         holder.tvTitle.setText(song.getTitle());
         holder.tvArtist.setText(song.getArtist());
+
+        holder.itemView.setOnClickListener(v -> listener.onSongClick(song));
     }
 
     @Override

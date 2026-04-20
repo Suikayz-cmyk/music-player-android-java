@@ -4,10 +4,12 @@ public class Song {
 
     String title;
     String artist;
+    int audioResId;
 
-    public Song(String title, String artist) {
+    public Song(String title, String artist, int audioResId) {
         this.title = title;
         this.artist = artist;
+        this.audioResId = audioResId;
     }
 
     public String getTitle() {
@@ -16,5 +18,9 @@ public class Song {
 
     public String getArtist() {
         return artist;
+    }
+
+    public int getAudioResId() {
+        return audioResId;
     }
 }

@@ -1,9 +1,11 @@
 package com.example.music_player_android_java.Fragments;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +22,7 @@ public class HomeFragment extends Fragment {
 
     RecyclerView recyclerView;
     List<Song> songList;
+    MediaPlayer mediaPlayer;
 
     public HomeFragment() {}
 
@@ -34,14 +37,41 @@ public class HomeFragment extends Fragment {
 
         songList = new ArrayList<>();
 
-        songList.add(new Song("Night Drive", "Aryo"));
-        songList.add(new Song("After Rain", "Unknown"));
-        songList.add(new Song("Midnight City", "Dreamer"));
-        songList.add(new Song("Ocean Lights", "Skyline"));
+        songList.add(new Song("ハッピーエンド(Happy End)", "back number", R.raw.happy_end));
+        songList.add(new Song("Lemon", "米津玄師 Kenshi Yonezu", R.raw.lemon));
+        songList.add(new Song("Pretender", "Official髭男dism", R.raw.pretender));
+        songList.add(new Song("Anymore", "D-LITE (from BIGBANG)", R.raw.anymore));
+        songList.add(new Song("Wedding Dress", "Taeyang", R.raw.wedding_dress));
+        songList.add(new Song("눈물뿐인 바보(A FOOL OF TEARS)", "BIGBANG", R.raw.a_fool_of_tears));
 
-        SongAdapter adapter = new SongAdapter(songList);
+        SongAdapter adapter = new SongAdapter(songList, song -> playSong(song));
+
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    private void playSong(Song song) {
+
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
+
+        mediaPlayer = MediaPlayer.create(getContext(), song.getAudioResId());
+        mediaPlayer.start();
+
+        Toast.makeText(getContext(),
+                "Playing: " + song.getTitle(),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
     }
 }

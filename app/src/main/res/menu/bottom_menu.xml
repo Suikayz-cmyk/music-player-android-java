@@ -4,15 +4,15 @@
     <item
         android:id="@+id/nav_home"
         android:title="Home"
-        android:icon="@android:drawable/ic_menu_view"/>
+        android:icon="@drawable/outline_home_24"/>
 
     <item
         android:id="@+id/nav_favorite"
         android:title="Favorite"
-        android:icon="@android:drawable/btn_star"/>
+        android:icon="@drawable/outline_favorite_24"/>
 
     <item
         android:id="@+id/nav_about"
         android:title="About"
-        android:icon="@android:drawable/ic_menu_info_details"/>
+        android:icon="@drawable/baseline_info_outline_24"/>
 </menu>
