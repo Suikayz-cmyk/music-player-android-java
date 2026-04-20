@@ -1,5 +1,6 @@
 package com.example.music_player_android_java.Fragments;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.music_player_android_java.PlayerActivity;
 import com.example.music_player_android_java.R;
 import com.example.music_player_android_java.adapter.SongAdapter;
 import com.example.music_player_android_java.model.Song;
@@ -44,7 +46,7 @@ public class HomeFragment extends Fragment {
         songList.add(new Song("Wedding Dress", "Taeyang", R.raw.wedding_dress));
         songList.add(new Song("눈물뿐인 바보(A FOOL OF TEARS)", "BIGBANG", R.raw.a_fool_of_tears));
 
-        SongAdapter adapter = new SongAdapter(songList, song -> playSong(song));
+        SongAdapter adapter = new SongAdapter(songList, song -> openPlayer(song));
 
         recyclerView.setAdapter(adapter);
 
@@ -64,6 +66,17 @@ public class HomeFragment extends Fragment {
         Toast.makeText(getContext(),
                 "Playing: " + song.getTitle(),
                 Toast.LENGTH_SHORT).show();
+    }
+
+    private void openPlayer(Song song) {
+
+        Intent intent = new Intent(getActivity(), PlayerActivity.class);
+
+        intent.putExtra("title", song.getTitle());
+        intent.putExtra("artist", song.getArtist());
+        intent.putExtra("audio", song.getAudioResId());
+
+        startActivity(intent);
     }
 
     @Override
