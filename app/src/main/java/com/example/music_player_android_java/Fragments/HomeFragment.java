@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.widget.Toast;
+
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +18,7 @@ import com.example.music_player_android_java.PlayerActivity;
 import com.example.music_player_android_java.R;
 import com.example.music_player_android_java.adapter.SongAdapter;
 import com.example.music_player_android_java.model.Song;
+import com.example.music_player_android_java.data.FavoriteManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +49,22 @@ public class HomeFragment extends Fragment {
         songList.add(new Song("Wedding Dress", "Taeyang", R.raw.wedding_dress));
         songList.add(new Song("눈물뿐인 바보(A FOOL OF TEARS)", "BIGBANG", R.raw.a_fool_of_tears));
 
-        SongAdapter adapter = new SongAdapter(songList, song -> openPlayer(song));
+        SongAdapter adapter = new SongAdapter(songList, new SongAdapter.OnSongClickListener() {
+            @Override
+            public void onSongClick(Song song) {
+                openPlayer(song);
+            }
+
+            @Override
+            public void onFavoriteClick(Song song) {
+
+                FavoriteManager.favoriteSongs.add(song);
+
+                Toast.makeText(getContext(),
+                        song.getTitle() + " added to favorites",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
         recyclerView.setAdapter(adapter);
 

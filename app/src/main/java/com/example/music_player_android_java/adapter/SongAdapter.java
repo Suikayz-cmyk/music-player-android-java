@@ -21,6 +21,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     public interface OnSongClickListener {
         void onSongClick(Song song);
+        void onFavoriteClick(Song song);
     }
 
     public SongAdapter(List<Song> songList, OnSongClickListener listener) {
@@ -31,7 +32,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvTitle, tvArtist;
-        Button btnPlayPause;
+        Button btnPlayPause, btnFavorite;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -39,6 +40,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvArtist = itemView.findViewById(R.id.tvArtist);
             btnPlayPause = itemView.findViewById(R.id.btnPlayPause);
+            btnFavorite = itemView.findViewById(R.id.btnFavorite);
         }
     }
 
@@ -60,7 +62,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         holder.tvTitle.setText(song.getTitle());
         holder.tvArtist.setText(song.getArtist());
 
-        holder.btnPlayPause.setOnClickListener(v -> listener.onSongClick(song));
+        holder.btnPlayPause.setOnClickListener(v ->
+                listener.onSongClick(song)
+        );
+
+        holder.btnFavorite.setOnClickListener(v ->
+                listener.onFavoriteClick(song)
+        );
     }
 
     @Override
