@@ -43,6 +43,7 @@ public class FavoriteFragment extends Fragment {
 
                     @Override
                     public void onPlayClick(Song song) {
+                        adapter.notifyDataSetChanged();
                         ((MainActivity)getActivity()).playSong(
                                 song.getTitle(),
                                 song.getArtist(),
@@ -102,7 +103,7 @@ public class FavoriteFragment extends Fragment {
             isPlaying = true;
         }
 
-        adapter.updatePlayingState(currentSongId, isPlaying);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

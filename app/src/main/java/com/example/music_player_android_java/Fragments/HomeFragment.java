@@ -96,7 +96,8 @@ public class HomeFragment extends Fragment {
         adapter = new SongAdapter(songList, new SongAdapter.OnSongClickListener() {
             @Override
             public void onPlayClick(Song song) {
-                adapter.updatePlayingState(song.getId(), true);
+                adapter.notifyDataSetChanged();
+
                 ((MainActivity)getActivity()).playSong(
                         song.getTitle(),
                         song.getArtist(),
@@ -158,7 +159,7 @@ public class HomeFragment extends Fragment {
             isPlaying = true;
         }
 
-        adapter.updatePlayingState(currentSongId, isPlaying);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -169,6 +170,7 @@ public class HomeFragment extends Fragment {
             adapter.notifyDataSetChanged();
         }
     }
+
 
     @Override
     public void onDestroy() {
