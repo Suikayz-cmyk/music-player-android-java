@@ -25,13 +25,15 @@
             android:layout_marginTop="24dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/profile"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:background="@drawable/bg_profile_circle"
+            android:clipToOutline="true"/>
 
         <TextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Aryo"
+            android:text="Muhammad Prayogo Pangestu"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -42,7 +44,7 @@
             android:id="@+id/tvEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="aryo@email.com"
+            android:text="2410501046@mahasiswa.upnvj.ac.id"
             android:textColor="#AAAAAA"
             android:textSize="15sp"
             android:layout_marginTop="4dp"
@@ -96,7 +98,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:padding="16dp"
-            android:background="#1E1E1E">
+            android:background="#1E1E1E"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -104,6 +107,21 @@
                 android:text="About App"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vibe Music Player"
+                android:textColor="#AAAAAA"
+                android:textSize="13sp"
+                android:layout_marginTop="6dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Version 1.0"
+                android:textColor="#AAAAAA"
+                android:textSize="12sp"
+                android:layout_marginTop="6dp"/>
         </LinearLayout>
 
     </LinearLayout>
