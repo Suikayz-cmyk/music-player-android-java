@@ -93,6 +93,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"/>
+
+        <TextView
+            android:id="@+id/tvMiniTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00 / 00:00"
+            android:textColor="#AAAAAA"
+            android:textSize="12sp"
+            android:layout_marginTop="2dp"/>
     </LinearLayout>
 
     <!-- BOTTOM NAV -->

@@ -1,13 +1,12 @@
 package com.example.music_player_android_java;
 
-import android.media.MediaPlayer;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.content.Intent;
-import android.os.Handler;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -23,29 +22,70 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
 
     LinearLayout miniPlayerLayout;
-    TextView tvMiniTitle, tvMiniArtist;
+
+    TextView tvMiniTitle;
+    TextView tvMiniArtist;
+    TextView tvMiniTime;
+
     ImageButton btnMiniPlayPause;
 
-    MediaPlayer mediaPlayer;
-
     SeekBar miniSeekBar;
+
     Handler handler = new Handler();
 
     String currentTitle = "";
     String currentArtist = "";
     int currentAudioRes = 0;
-    boolean isPlaying = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        miniSeekBar = findViewById(R.id.miniSeekBar);
+        initViews();
+        setupMiniSeekBar();
+        setupMiniPlayerClick();
+        setupMiniPlayPauseButton();
+        setupBottomNavigation();
+
+        loadFragment(new HomeFragment());
+    }
+
+    private void initViews() {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         miniPlayerLayout = findViewById(R.id.miniPlayerLayout);
+
+        tvMiniTitle = findViewById(R.id.tvMiniTitle);
+        tvMiniArtist = findViewById(R.id.tvMiniArtist);
+        tvMiniTime = findViewById(R.id.tvMiniTime);
+
+        btnMiniPlayPause = findViewById(R.id.btnMiniPlayPause);
+
+        miniSeekBar = findViewById(R.id.miniSeekBar);
+    }
+
+    private void setupBottomNavigation() {
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+
+            if (item.getItemId() == R.id.nav_home) {
+                loadFragment(new HomeFragment());
+
+            } else if (item.getItemId() == R.id.nav_favorite) {
+                loadFragment(new FavoriteFragment());
+
+            } else {
+                loadFragment(new AccountFragment());
+            }
+
+            return true;
+        });
+    }
+
+    private void setupMiniPlayerClick() {
+
         miniPlayerLayout.setOnClickListener(v -> {
 
             Intent intent = new Intent(this, PlayerActivity.class);
@@ -56,24 +96,9 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(intent);
         });
-        tvMiniTitle = findViewById(R.id.tvMiniTitle);
-        tvMiniArtist = findViewById(R.id.tvMiniArtist);
-        btnMiniPlayPause = findViewById(R.id.btnMiniPlayPause);
+    }
 
-        loadFragment(new HomeFragment());
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-
-            if (item.getItemId() == R.id.nav_home) {
-                loadFragment(new HomeFragment());
-            } else if (item.getItemId() == R.id.nav_favorite) {
-                loadFragment(new FavoriteFragment());
-            } else {
-                loadFragment(new AccountFragment());
-            }
-
-            return true;
-        });
+    private void setupMiniPlayPauseButton() {
 
         btnMiniPlayPause.setOnClickListener(v -> {
 
@@ -91,9 +116,38 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setupMiniSeekBar() {
+
+        miniSeekBar.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar,
+                                                  int progress,
+                                                  boolean fromUser) {
+
+                        if (fromUser) {
+                            MusicManager.seekTo(progress);
+                        }
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                    }
+                });
+    }
+
     public void playSong(String title, String artist, int audioResId) {
 
         MusicManager.play(this, title, artist, audioResId);
+
+        currentTitle = title;
+        currentArtist = artist;
+        currentAudioRes = audioResId;
 
         tvMiniTitle.setText(title);
         tvMiniArtist.setText(artist);
@@ -109,17 +163,15 @@ public class MainActivity extends AppCompatActivity {
         updateMiniSeekBar();
     }
 
-    private void loadFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_container, fragment)
-                .commit();
-    }
-
     private void updateMiniSeekBar() {
 
-        miniSeekBar.setProgress(
-                MusicManager.getCurrentPosition()
+        int current = MusicManager.getCurrentPosition();
+        int total = MusicManager.getDuration();
+
+        miniSeekBar.setProgress(current);
+
+        tvMiniTime.setText(
+                formatTime(current) + " / " + formatTime(total)
         );
 
         if (MusicManager.isPlaying()) {
@@ -127,12 +179,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    private String formatTime(int ms) {
 
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-        }
+        int seconds = ms / 1000;
+        int minutes = seconds / 60;
+        seconds = seconds % 60;
+
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    private void loadFragment(Fragment fragment) {
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_container, fragment)
+                .commit();
     }
 }
