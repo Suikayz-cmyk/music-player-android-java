@@ -3,13 +3,14 @@ package com.example.music_player_android_java.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.music_player_android_java.R;
+import com.example.music_player_android_java.data.FavoriteManager;
 import com.example.music_player_android_java.model.Song;
 
 import java.util.List;
@@ -19,8 +20,11 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     List<Song> songList;
     OnSongClickListener listener;
 
+    int currentPlayingId = -1;
+    boolean isPlaying = false;
+
     public interface OnSongClickListener {
-        void onSongClick(Song song);
+        void onPlayClick(Song song);
         void onFavoriteClick(Song song);
     }
 
@@ -32,14 +36,14 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvTitle, tvArtist;
-        Button btnPlayPause, btnFavorite;
+        ImageButton btnPlay, btnFavorite;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvArtist = itemView.findViewById(R.id.tvArtist);
-            btnPlayPause = itemView.findViewById(R.id.btnPlayPause);
+            btnPlay = itemView.findViewById(R.id.btnPlayPause);
             btnFavorite = itemView.findViewById(R.id.btnFavorite);
         }
     }
@@ -62,17 +66,49 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         holder.tvTitle.setText(song.getTitle());
         holder.tvArtist.setText(song.getArtist());
 
-        holder.btnPlayPause.setOnClickListener(v ->
-                listener.onSongClick(song)
+        if (currentPlayingId == song.getId() && isPlaying) {
+            holder.btnPlay.setImageResource(android.R.drawable.ic_media_pause);
+        } else {
+            holder.btnPlay.setImageResource(android.R.drawable.ic_media_play);
+        }
+
+        if (FavoriteManager.isFavorite(song)) {
+            holder.btnFavorite.setImageResource(R.drawable.ic_heart_filled);
+        } else {
+            holder.btnFavorite.setImageResource(R.drawable.ic_heart_outline);
+        }
+        if (FavoriteManager.isFavorite(song)) {
+            holder.btnFavorite.setColorFilter(
+                    android.graphics.Color.parseColor("#E53935")
+            );
+        } else {
+            holder.btnFavorite.setColorFilter(
+                    android.graphics.Color.parseColor("#FFFFFF")
+            );
+        }
+
+
+        holder.btnPlay.setOnClickListener(v -> {
+            listener.onPlayClick(song);
+        });
+        holder.btnPlay.setColorFilter(
+                android.graphics.Color.parseColor("#1DB954")
         );
 
-        holder.btnFavorite.setOnClickListener(v ->
-                listener.onFavoriteClick(song)
-        );
+        holder.btnFavorite.setOnClickListener(v -> {
+            listener.onFavoriteClick(song);
+            notifyItemChanged(position);
+        });
     }
 
     @Override
     public int getItemCount() {
         return songList.size();
+    }
+
+    public void updatePlayingState(int songId, boolean playing) {
+        currentPlayingId = songId;
+        isPlaying = playing;
+        notifyDataSetChanged();
     }
 }

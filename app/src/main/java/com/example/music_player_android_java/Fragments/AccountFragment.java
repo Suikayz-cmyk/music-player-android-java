@@ -1,4 +1,4 @@
-package com.example.music_player_android_java.fragments;
+package com.example.music_player_android_java.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
