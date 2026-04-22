@@ -45,12 +45,18 @@
     <!-- MINI PLAYER -->
     <LinearLayout
         android:id="@+id/miniPlayerLayout"
-        android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="gone"
+
+        android:layout_width="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
         android:padding="12dp"
-        android:background="#2A2A2A"
-        android:visibility="gone">
+        android:background="@drawable/bg_mini_player"
+        android:elevation="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"

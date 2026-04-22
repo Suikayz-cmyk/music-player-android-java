@@ -121,7 +121,7 @@ public class FavoriteFragment extends Fragment {
             adapter.notifyDataSetChanged();
         }
     }
-    
+
     @Override
     public void onDestroy() {
         super.onDestroy();
