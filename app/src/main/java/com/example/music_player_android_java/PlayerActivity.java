@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ public class PlayerActivity extends AppCompatActivity {
     TextView tvSongTitle;
     TextView tvArtistName;
     TextView tvTime;
+    ImageView imgDetailCover;
 
     Button btnPlayPause;
     SeekBar seekBar;
@@ -25,6 +27,11 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+
+        imgDetailCover = findViewById(R.id.imgDetailCover);
+        imgDetailCover.setImageResource(
+                MusicManager.currentImageRes
+        );
 
         tvSongTitle = findViewById(R.id.tvSongTitle);
         tvArtistName = findViewById(R.id.tvArtistName);

@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tvMiniTitle;
     TextView tvMiniArtist;
     TextView tvMiniTime;
-
+    ImageView imgMiniCover;
     ImageButton btnMiniPlayPause;
 
     SeekBar miniSeekBar;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     String currentTitle = "";
     String currentArtist = "";
     int currentAudioRes = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+
+        imgMiniCover = findViewById(R.id.imgMiniCover);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -141,9 +145,18 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    public void playSong(String title, String artist, int audioResId) {
+    public void playSong(String title,
+                         String artist,
+                         int audioResId,
+                         int imageResId) {
 
-        MusicManager.play(this, title, artist, audioResId);
+        MusicManager.play(
+                this,
+                title,
+                artist,
+                audioResId,
+                imageResId
+        );
 
         currentTitle = title;
         currentArtist = artist;
@@ -151,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
 
         tvMiniTitle.setText(title);
         tvMiniArtist.setText(artist);
+
+        imgMiniCover.setImageResource(imageResId);
 
         miniPlayerLayout.setVisibility(LinearLayout.VISIBLE);
 

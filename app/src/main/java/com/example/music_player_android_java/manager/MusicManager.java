@@ -3,9 +3,11 @@ package com.example.music_player_android_java.manager;
 import android.content.Context;
 import android.media.MediaPlayer;
 
+
 public class MusicManager {
 
     public static MediaPlayer mediaPlayer;
+    public static int currentImageRes = 0;
 
     public static String currentTitle = "";
     public static String currentArtist = "";
@@ -14,7 +16,8 @@ public class MusicManager {
     public static void play(Context context,
                             String title,
                             String artist,
-                            int audioResId) {
+                            int audioResId,
+                            int imageResId) {
 
         if (mediaPlayer != null) {
             mediaPlayer.release();
@@ -26,6 +29,7 @@ public class MusicManager {
         currentTitle = title;
         currentArtist = artist;
         currentAudioRes = audioResId;
+        currentImageRes = imageResId;
     }
 
     public static void toggle() {

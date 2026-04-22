@@ -97,7 +97,8 @@ public class HomeFragment extends Fragment {
                 ((MainActivity)getActivity()).playSong(
                         song.getTitle(),
                         song.getArtist(),
-                        song.getAudioResId()
+                        song.getAudioResId(),
+                        song.getImageResId()
                 );
             }
 
