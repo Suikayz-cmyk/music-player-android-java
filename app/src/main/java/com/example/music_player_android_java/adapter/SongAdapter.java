@@ -114,6 +114,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         return songList.size();
     }
 
+
     public void updatePlayingState(int songId, boolean playing) {
         currentPlayingId = songId;
         isPlaying = playing;

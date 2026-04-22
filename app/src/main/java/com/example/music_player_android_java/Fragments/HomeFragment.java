@@ -114,6 +114,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onCardClick(Song song) {
 
+                ((MainActivity)getActivity()).playSong(
+                        song.getTitle(),
+                        song.getArtist(),
+                        song.getAudioResId(),
+                        song.getImageResId()
+                );
+
                 Intent intent = new Intent(getActivity(), PlayerActivity.class);
                 startActivity(intent);
             }

@@ -150,13 +150,23 @@ public class MainActivity extends AppCompatActivity {
                          int audioResId,
                          int imageResId) {
 
-        MusicManager.play(
-                this,
-                title,
-                artist,
-                audioResId,
-                imageResId
-        );
+        boolean sameSong =
+                MusicManager.currentAudioRes == audioResId;
+
+        if (sameSong && MusicManager.mediaPlayer != null) {
+
+            MusicManager.toggle();
+
+        } else {
+
+            MusicManager.play(
+                    this,
+                    title,
+                    artist,
+                    audioResId,
+                    imageResId
+            );
+        }
 
         currentTitle = title;
         currentArtist = artist;
@@ -164,14 +174,19 @@ public class MainActivity extends AppCompatActivity {
 
         tvMiniTitle.setText(title);
         tvMiniArtist.setText(artist);
-
         imgMiniCover.setImageResource(imageResId);
 
         miniPlayerLayout.setVisibility(LinearLayout.VISIBLE);
 
-        btnMiniPlayPause.setImageResource(
-                android.R.drawable.ic_media_pause
-        );
+        if (MusicManager.isPlaying()) {
+            btnMiniPlayPause.setImageResource(
+                    android.R.drawable.ic_media_pause
+            );
+        } else {
+            btnMiniPlayPause.setImageResource(
+                    android.R.drawable.ic_media_play
+            );
+        }
 
         miniSeekBar.setMax(MusicManager.getDuration());
 
