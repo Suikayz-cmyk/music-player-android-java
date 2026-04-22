@@ -3,6 +3,7 @@ package com.example.music_player_android_java;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ImageView;
@@ -23,6 +24,9 @@ public class PlayerActivity extends AppCompatActivity {
 
     Handler handler = new Handler();
 
+    ImageView imgBgCover;
+    ImageButton btnBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +36,14 @@ public class PlayerActivity extends AppCompatActivity {
         imgDetailCover.setImageResource(
                 MusicManager.currentImageRes
         );
+
+        imgBgCover = findViewById(R.id.imgBgCover);
+        btnBack = findViewById(R.id.btnBack);
+        imgBgCover.setImageResource(
+                MusicManager.currentImageRes
+        );
+
+        btnBack.setOnClickListener(v -> finish());
 
         tvSongTitle = findViewById(R.id.tvSongTitle);
         tvArtistName = findViewById(R.id.tvArtistName);
