@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.music_player_android_java.Fragments.AccountFragment;
 import com.example.music_player_android_java.Fragments.FavoriteFragment;
 import com.example.music_player_android_java.Fragments.HomeFragment;
+import com.example.music_player_android_java.manager.MusicManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -76,17 +77,15 @@ public class MainActivity extends AppCompatActivity {
 
         btnMiniPlayPause.setOnClickListener(v -> {
 
-            if (mediaPlayer == null) return;
+            MusicManager.toggle();
 
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.pause();
-                btnMiniPlayPause.setImageResource(
-                        android.R.drawable.ic_media_play
-                );
-            } else {
-                mediaPlayer.start();
+            if (MusicManager.isPlaying()) {
                 btnMiniPlayPause.setImageResource(
                         android.R.drawable.ic_media_pause
+                );
+            } else {
+                btnMiniPlayPause.setImageResource(
+                        android.R.drawable.ic_media_play
                 );
             }
         });
@@ -94,16 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void playSong(String title, String artist, int audioResId) {
 
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-        }
-
-        mediaPlayer = MediaPlayer.create(this, audioResId);
-        mediaPlayer.start();
-
-        currentTitle = title;
-        currentArtist = artist;
-        currentAudioRes = audioResId;
+        MusicManager.play(this, title, artist, audioResId);
 
         tvMiniTitle.setText(title);
         tvMiniArtist.setText(artist);
@@ -114,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 android.R.drawable.ic_media_pause
         );
 
-        miniSeekBar.setMax(mediaPlayer.getDuration());
+        miniSeekBar.setMax(MusicManager.getDuration());
 
         updateMiniSeekBar();
     }
@@ -128,11 +118,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateMiniSeekBar() {
 
-        if (mediaPlayer == null) return;
+        miniSeekBar.setProgress(
+                MusicManager.getCurrentPosition()
+        );
 
-        miniSeekBar.setProgress(mediaPlayer.getCurrentPosition());
-
-        if (mediaPlayer.isPlaying()) {
+        if (MusicManager.isPlaying()) {
             handler.postDelayed(this::updateMiniSeekBar, 500);
         }
     }
