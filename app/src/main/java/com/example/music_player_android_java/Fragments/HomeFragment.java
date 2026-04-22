@@ -1,5 +1,6 @@
 package com.example.music_player_android_java.Fragments;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.music_player_android_java.MainActivity;
+import com.example.music_player_android_java.PlayerActivity;
 import com.example.music_player_android_java.R;
 import com.example.music_player_android_java.adapter.SongAdapter;
 import com.example.music_player_android_java.data.FavoriteManager;
@@ -94,6 +96,7 @@ public class HomeFragment extends Fragment {
         adapter = new SongAdapter(songList, new SongAdapter.OnSongClickListener() {
             @Override
             public void onPlayClick(Song song) {
+                adapter.updatePlayingState(song.getId(), true);
                 ((MainActivity)getActivity()).playSong(
                         song.getTitle(),
                         song.getArtist(),
@@ -107,7 +110,16 @@ public class HomeFragment extends Fragment {
                 FavoriteManager.toggleFavorite(song);
                 adapter.notifyDataSetChanged();
             }
+
+            @Override
+            public void onCardClick(Song song) {
+
+                Intent intent = new Intent(getActivity(), PlayerActivity.class);
+                startActivity(intent);
+            }
         });
+
+
 
         recyclerView.setAdapter(adapter);
 
@@ -140,6 +152,15 @@ public class HomeFragment extends Fragment {
         }
 
         adapter.updatePlayingState(currentSongId, isPlaying);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

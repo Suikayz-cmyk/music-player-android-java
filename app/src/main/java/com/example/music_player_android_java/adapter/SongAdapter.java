@@ -27,6 +27,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     public interface OnSongClickListener {
         void onPlayClick(Song song);
         void onFavoriteClick(Song song);
+
+        void onCardClick(Song song);
     }
 
     public SongAdapter(List<Song> songList, OnSongClickListener listener) {
@@ -67,6 +69,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         holder.imgCover.setImageResource(song.getImageResId());
         holder.tvTitle.setText(song.getTitle());
         holder.tvArtist.setText(song.getArtist());
+
+        holder.itemView.setOnClickListener(v ->
+                listener.onCardClick(song)
+        );
 
         if (currentPlayingId == song.getId() && isPlaying) {
             holder.btnPlay.setImageResource(android.R.drawable.ic_media_pause);

@@ -1,5 +1,6 @@
 package com.example.music_player_android_java.Fragments;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.music_player_android_java.MainActivity;
+import com.example.music_player_android_java.PlayerActivity;
 import com.example.music_player_android_java.R;
 import com.example.music_player_android_java.adapter.SongAdapter;
 import com.example.music_player_android_java.data.FavoriteManager;
@@ -53,6 +55,13 @@ public class FavoriteFragment extends Fragment {
                     public void onFavoriteClick(Song song) {
                         FavoriteManager.toggleFavorite(song);
                         adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCardClick(Song song) {
+
+                        Intent intent = new Intent(getActivity(), PlayerActivity.class);
+                        startActivity(intent);
                     }
                 });
 
