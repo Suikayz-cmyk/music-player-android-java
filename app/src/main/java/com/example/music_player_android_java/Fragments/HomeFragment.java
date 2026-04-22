@@ -42,12 +42,54 @@ public class HomeFragment extends Fragment {
 
         songList = new ArrayList<>();
 
-        songList.add(new Song(1,"ハッピーエンド(Happy End)","back number",R.raw.happy_end));
-        songList.add(new Song(2,"Lemon","Kenshi Yonezu",R.raw.lemon));
-        songList.add(new Song(3,"Pretender","Official HIGE DANDism",R.raw.pretender));
-        songList.add(new Song(4,"Anymore","D-LITE",R.raw.anymore));
-        songList.add(new Song(5,"Wedding Dress","Taeyang",R.raw.wedding_dress));
-        songList.add(new Song(6,"A Fool Of Tears","BIGBANG",R.raw.a_fool_of_tears));
+        songList.add(new Song(
+                1,
+                "ハッピーエンド(Happy End)",
+                "back number",
+                R.raw.happy_end,
+                R.drawable.cover_happy_end
+        ));
+
+        songList.add(new Song(
+                2,
+                "Lemon",
+                "Kenshi Yonezu",
+                R.raw.lemon,
+                R.drawable.cover_lemon
+        ));
+
+        songList.add(new Song(
+                3,
+                "Pretender",
+                "Official HIGE DANDism",
+                R.raw.pretender,
+                R.drawable.cover_pretender
+        ));
+
+        songList.add(new Song(
+                4,
+                "Anymore",
+                "D-LITE(from BIGBANG)",
+                R.raw.anymore,
+                R.drawable.cover_anymore
+        ));
+
+        songList.add(new Song(
+                5,
+                "Wedding Dress",
+                "Taeyang",
+                R.raw.wedding_dress,
+                R.drawable.cover_wedding_dress
+        ));
+
+        songList.add(new Song(
+                6,
+                "A Fool Of Tears",
+                "BIGBANG",
+                R.raw.a_fool_of_tears,
+                R.drawable.cover_a_fool_of_tears
+        ));
+
 
         adapter = new SongAdapter(songList, new SongAdapter.OnSongClickListener() {
             @Override

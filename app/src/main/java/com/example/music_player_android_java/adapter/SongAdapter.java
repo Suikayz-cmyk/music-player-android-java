@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,13 +35,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
+        ImageView imgCover;
         TextView tvTitle, tvArtist;
         ImageButton btnPlay, btnFavorite;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
+            imgCover = itemView.findViewById(R.id.imgCover);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvArtist = itemView.findViewById(R.id.tvArtist);
             btnPlay = itemView.findViewById(R.id.btnPlayPause);
@@ -63,6 +64,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
         Song song = songList.get(position);
 
+        holder.imgCover.setImageResource(song.getImageResId());
         holder.tvTitle.setText(song.getTitle());
         holder.tvArtist.setText(song.getArtist());
 
