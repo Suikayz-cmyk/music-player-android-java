@@ -174,9 +174,23 @@ public class MainActivity extends AppCompatActivity {
                 formatTime(current) + " / " + formatTime(total)
         );
 
-        if (MusicManager.isPlaying()) {
-            handler.postDelayed(this::updateMiniSeekBar, 500);
+        if (MusicManager.mediaPlayer != null &&
+                current >= total - 500) {
+
+            btnMiniPlayPause.setImageResource(
+                    android.R.drawable.ic_media_play
+            );
+
+            miniSeekBar.setProgress(0);
+
+            tvMiniTime.setText(
+                    "00:00 / " + formatTime(total)
+            );
+
+            return;
         }
+
+        handler.postDelayed(this::updateMiniSeekBar, 500);
     }
 
     private String formatTime(int ms) {
@@ -194,5 +208,32 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.frame_container, fragment)
                 .commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (MusicManager.mediaPlayer != null) {
+
+            miniPlayerLayout.setVisibility(LinearLayout.VISIBLE);
+
+            tvMiniTitle.setText(MusicManager.currentTitle);
+            tvMiniArtist.setText(MusicManager.currentArtist);
+
+            miniSeekBar.setMax(MusicManager.getDuration());
+
+            updateMiniSeekBar();
+
+            if (MusicManager.isPlaying()) {
+                btnMiniPlayPause.setImageResource(
+                        android.R.drawable.ic_media_pause
+                );
+            } else {
+                btnMiniPlayPause.setImageResource(
+                        android.R.drawable.ic_media_play
+                );
+            }
+        }
     }
 }
