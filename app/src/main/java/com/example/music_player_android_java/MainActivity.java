@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
                         android.R.drawable.ic_media_play
                 );
             }
+
+            refreshCurrentFragment();
         });
     }
 
@@ -221,6 +223,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         handler.postDelayed(this::updateMiniSeekBar, 500);
+    }
+
+    private void refreshCurrentFragment() {
+
+        Fragment fragment =
+                getSupportFragmentManager()
+                        .findFragmentById(R.id.frame_container);
+
+        if (fragment instanceof HomeFragment) {
+            ((HomeFragment) fragment).refreshList();
+
+        } else if (fragment instanceof FavoriteFragment) {
+            ((FavoriteFragment) fragment).refreshList();
+        }
     }
 
     private String formatTime(int ms) {

@@ -115,6 +115,13 @@ public class FavoriteFragment extends Fragment {
         }
     }
 
+    public void refreshList() {
+
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+    
     @Override
     public void onDestroy() {
         super.onDestroy();
