@@ -26,7 +26,7 @@
             android:layout_gravity="center_horizontal"
             android:src="@drawable/profile"
             android:scaleType="centerCrop"
-            android:background="@drawable/bg_profile_circle"
+            android:background="@drawable/bg_circle"
             android:clipToOutline="true"/>
 
         <TextView
