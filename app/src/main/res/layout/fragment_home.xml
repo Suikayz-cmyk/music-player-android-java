@@ -26,23 +26,10 @@
             android:clipChildren="false"
             android:clipToPadding="false">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="78dp"
-                android:layout_height="78dp"
-                android:layout_gravity="center"
-                android:rotation="-12"
-                android:translationX="-6dp"
-                android:translationY="2dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="10dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/cover_lemon"/>
-
-            </androidx.cardview.widget.CardView>
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPagerCover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </FrameLayout>
 

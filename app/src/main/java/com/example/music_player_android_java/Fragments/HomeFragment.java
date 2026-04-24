@@ -1,7 +1,6 @@
 package com.example.music_player_android_java.Fragments;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +9,12 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.music_player_android_java.MainActivity;
 import com.example.music_player_android_java.PlayerActivity;
 import com.example.music_player_android_java.R;
+import com.example.music_player_android_java.adapter.CoverPagerAdapter;
 import com.example.music_player_android_java.adapter.SongAdapter;
 import com.example.music_player_android_java.data.FavoriteManager;
 import com.example.music_player_android_java.manager.MusicManager;
@@ -24,24 +25,46 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    RecyclerView recyclerView;
-    List<Song> songList;
-    SongAdapter adapter;
-    MediaPlayer mediaPlayer;
+    private RecyclerView recyclerView;
+    private ViewPager2 viewPagerCover;
 
-    int currentSongId = -1;
-    boolean isPlaying = false;
+    private List<Song> songList;
+    private SongAdapter adapter;
 
-    public HomeFragment() {}
+    public HomeFragment() {
+        // Required empty constructor
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(
+                R.layout.fragment_home,
+                container,
+                false
+        );
+
+        initViews(view);
+        setupSongData();
+        setupBanner();
+        setupSongList();
+
+        return view;
+    }
+
+    private void initViews(View view) {
 
         recyclerView = view.findViewById(R.id.recyclerSongs);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        viewPagerCover = view.findViewById(R.id.viewPagerCover);
+
+        recyclerView.setLayoutManager(
+                new LinearLayoutManager(getContext())
+        );
+    }
+
+    private void setupSongData() {
 
         songList = new ArrayList<>();
 
@@ -52,7 +75,6 @@ public class HomeFragment extends Fragment {
                 R.raw.happy_end,
                 R.drawable.cover_happy_end
         ));
-        MusicManager.setPlaylist(songList);
 
         songList.add(new Song(
                 2,
@@ -94,76 +116,89 @@ public class HomeFragment extends Fragment {
                 R.drawable.cover_a_fool_of_tears
         ));
 
-
-        adapter = new SongAdapter(songList, new SongAdapter.OnSongClickListener() {
-            @Override
-            public void onPlayClick(Song song) {
-                adapter.notifyDataSetChanged();
-                MusicManager.currentIndex = songList.indexOf(song);
-
-                ((MainActivity)getActivity()).playSong(
-                        song.getTitle(),
-                        song.getArtist(),
-                        song.getAudioResId(),
-                        song.getImageResId()
-                );
-            }
-
-            @Override
-            public void onFavoriteClick(Song song) {
-                FavoriteManager.toggleFavorite(song);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCardClick(Song song) {
-
-                ((MainActivity)getActivity()).playSong(
-                        song.getTitle(),
-                        song.getArtist(),
-                        song.getAudioResId(),
-                        song.getImageResId()
-                );
-
-
-                Intent intent = new Intent(getActivity(), PlayerActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-
-        recyclerView.setAdapter(adapter);
-
-        return view;
+        // Simpan playlist global untuk next/prev
+        MusicManager.setPlaylist(songList);
     }
 
-    private void playSong(Song song) {
+    private void setupBanner() {
 
-        if (currentSongId == song.getId() && mediaPlayer != null) {
+        CoverPagerAdapter coverAdapter =
+                new CoverPagerAdapter(songList);
 
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.pause();
-                isPlaying = false;
-            } else {
-                mediaPlayer.start();
-                isPlaying = true;
-            }
+        viewPagerCover.setAdapter(coverAdapter);
 
-        } else {
+        viewPagerCover.setOffscreenPageLimit(3);
 
-            if (mediaPlayer != null) {
-                mediaPlayer.release();
-            }
+        viewPagerCover.setPageTransformer((page, position) -> {
 
-            mediaPlayer = MediaPlayer.create(getContext(), song.getAudioResId());
-            mediaPlayer.start();
+            float scale =
+                    0.85f + (1 - Math.abs(position)) * 0.15f;
 
-            currentSongId = song.getId();
-            isPlaying = true;
-        }
+            page.setScaleY(scale);
 
-        adapter.notifyDataSetChanged();
+            page.setAlpha(
+                    0.7f + (1 - Math.abs(position)) * 0.3f
+            );
+        });
+    }
+
+    private void setupSongList() {
+
+        adapter = new SongAdapter(
+                songList,
+                new SongAdapter.OnSongClickListener() {
+
+                    @Override
+                    public void onPlayClick(Song song) {
+
+                        MusicManager.currentIndex =
+                                songList.indexOf(song);
+
+                        ((MainActivity) requireActivity())
+                                .playSong(
+                                        song.getTitle(),
+                                        song.getArtist(),
+                                        song.getAudioResId(),
+                                        song.getImageResId()
+                                );
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFavoriteClick(Song song) {
+
+                        FavoriteManager.toggleFavorite(song);
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCardClick(Song song) {
+
+                        MusicManager.currentIndex =
+                                songList.indexOf(song);
+
+                        ((MainActivity) requireActivity())
+                                .playSong(
+                                        song.getTitle(),
+                                        song.getArtist(),
+                                        song.getAudioResId(),
+                                        song.getImageResId()
+                                );
+
+                        Intent intent =
+                                new Intent(
+                                        getActivity(),
+                                        PlayerActivity.class
+                                );
+
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -179,16 +214,6 @@ public class HomeFragment extends Fragment {
 
         if (adapter != null) {
             adapter.notifyDataSetChanged();
-        }
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
         }
     }
 }
