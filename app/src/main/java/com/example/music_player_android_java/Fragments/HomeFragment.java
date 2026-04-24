@@ -16,6 +16,7 @@ import com.example.music_player_android_java.PlayerActivity;
 import com.example.music_player_android_java.R;
 import com.example.music_player_android_java.adapter.SongAdapter;
 import com.example.music_player_android_java.data.FavoriteManager;
+import com.example.music_player_android_java.manager.MusicManager;
 import com.example.music_player_android_java.model.Song;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class HomeFragment extends Fragment {
                 R.raw.happy_end,
                 R.drawable.cover_happy_end
         ));
+        MusicManager.setPlaylist(songList);
 
         songList.add(new Song(
                 2,
@@ -97,6 +99,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onPlayClick(Song song) {
                 adapter.notifyDataSetChanged();
+                MusicManager.currentIndex = songList.indexOf(song);
 
                 ((MainActivity)getActivity()).playSong(
                         song.getTitle(),
@@ -121,6 +124,7 @@ public class HomeFragment extends Fragment {
                         song.getAudioResId(),
                         song.getImageResId()
                 );
+
 
                 Intent intent = new Intent(getActivity(), PlayerActivity.class);
                 startActivity(intent);

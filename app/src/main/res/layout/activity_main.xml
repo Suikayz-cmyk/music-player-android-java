@@ -97,11 +97,25 @@
             </LinearLayout>
 
             <ImageButton
+                android:id="@+id/btnMiniPrev"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/ic_media_previous"/>
+
+            <ImageButton
                 android:id="@+id/btnMiniPlayPause"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="@android:color/transparent"
                 android:src="@android:drawable/ic_media_pause"/>
+
+            <ImageButton
+                android:id="@+id/btnMiniNext"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/ic_media_next"/>
         </LinearLayout>
 
         <SeekBar

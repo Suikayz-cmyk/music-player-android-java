@@ -97,12 +97,36 @@
             android:textSize="14sp"
             android:layout_marginTop="6dp"/>
 
-        <Button
-            android:id="@+id/btnPlayPause"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pause"
-            android:layout_marginTop="28dp"/>
+            android:layout_marginTop="28dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnPrev"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/ic_media_previous" />
+
+            <Button
+                android:id="@+id/btnPlayPause"
+                android:layout_width="120dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Pause" />
+
+            <ImageButton
+                android:id="@+id/btnNext"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/ic_media_next" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

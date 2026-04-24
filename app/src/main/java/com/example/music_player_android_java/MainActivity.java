@@ -3,6 +3,7 @@ package com.example.music_player_android_java;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -28,11 +29,14 @@ public class MainActivity extends AppCompatActivity {
     TextView tvMiniArtist;
     TextView tvMiniTime;
     ImageView imgMiniCover;
+
     ImageButton btnMiniPlayPause;
 
     SeekBar miniSeekBar;
 
     Handler handler = new Handler();
+
+    ImageButton btnMiniPrev, btnMiniNext;
 
     String currentTitle = "";
     String currentArtist = "";
@@ -49,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
         setupMiniPlayerClick();
         setupMiniPlayPauseButton();
         setupBottomNavigation();
+        imgMiniCover = findViewById(R.id.imgMiniCover);
 
         loadFragment(new HomeFragment());
     }
-
     private void initViews() {
 
         imgMiniCover = findViewById(R.id.imgMiniCover);
@@ -66,6 +70,18 @@ public class MainActivity extends AppCompatActivity {
         tvMiniTime = findViewById(R.id.tvMiniTime);
 
         btnMiniPlayPause = findViewById(R.id.btnMiniPlayPause);
+        btnMiniPrev = findViewById(R.id.btnMiniPrev);
+        btnMiniNext = findViewById(R.id.btnMiniNext);
+
+        btnMiniPrev.setOnClickListener(v -> {
+            MusicManager.prev(this);
+            refreshMiniPlayer();
+        });
+
+        btnMiniNext.setOnClickListener(v -> {
+            MusicManager.next(this);
+            refreshMiniPlayer();
+        });
 
         miniSeekBar = findViewById(R.id.miniSeekBar);
     }
@@ -256,30 +272,36 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    private void refreshMiniPlayer() {
+
+        tvMiniTitle.setText(MusicManager.currentTitle);
+        tvMiniArtist.setText(MusicManager.currentArtist);
+
+        imgMiniCover.setImageResource(
+                MusicManager.currentImageRes
+        );
+
+        miniSeekBar.setMax(MusicManager.getDuration());
+
+        if (MusicManager.isPlaying()) {
+            btnMiniPlayPause.setImageResource(
+                    android.R.drawable.ic_media_pause
+            );
+        } else {
+            btnMiniPlayPause.setImageResource(
+                    android.R.drawable.ic_media_play
+            );
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
 
         if (MusicManager.mediaPlayer != null) {
-
-            miniPlayerLayout.setVisibility(LinearLayout.VISIBLE);
-
-            tvMiniTitle.setText(MusicManager.currentTitle);
-            tvMiniArtist.setText(MusicManager.currentArtist);
-
-            miniSeekBar.setMax(MusicManager.getDuration());
-
+            miniPlayerLayout.setVisibility(View.VISIBLE);
+            refreshMiniPlayer();
             updateMiniSeekBar();
-
-            if (MusicManager.isPlaying()) {
-                btnMiniPlayPause.setImageResource(
-                        android.R.drawable.ic_media_pause
-                );
-            } else {
-                btnMiniPlayPause.setImageResource(
-                        android.R.drawable.ic_media_play
-                );
-            }
         }
     }
 }
