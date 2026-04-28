@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.music_player_android_java.manager.MusicManager;
+import com.github.chrisbanes.photoview.PhotoView;
 
 public class PlayerActivity extends AppCompatActivity {
 
@@ -21,7 +22,7 @@ public class PlayerActivity extends AppCompatActivity {
     private TextView tvTime;
 
     // Cover image
-    private ImageView imgDetailCover;
+    private PhotoView imgDetailCover;
     private ImageView imgBgCover;
 
     // Controls
